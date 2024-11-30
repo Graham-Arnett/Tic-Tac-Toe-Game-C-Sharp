@@ -1,25 +1,61 @@
-﻿namespace Tic_Tac_Toe_Game
+﻿
+string[] grid = new string[9] { "1", "2", "3", "4", "5", "6", "7", "8", "9", };
+bool isPlayer1Turn = true;
+int numTurns = 0;
+if (CheckVictory())
+    Console.WriteLine("You win!");
+while (!CheckVictory() && numTurns != 9)
 {
-    internal class Program
+    PrintGrid();
+    if (isPlayer1Turn)
+        Console.WriteLine("Player 1 turn!");
+    else
+        Console.WriteLine("Player 2 turn!");
+
+    string choice = Console.ReadLine();
+
+    if (grid.Contains(choice) && choice != "X" && choice != "0")
     {
-        static void Main(string[] args)
+        int gridIndex = Convert.ToInt32(choice) - 1;
+
+        if (isPlayer1Turn)
+            grid[gridIndex] = "X";
+        else 
+            grid[gridIndex] = "0";
+
+        numTurns++;
+    }
+    isPlayer1Turn = !isPlayer1Turn;
+}
+if (CheckVictory())
+    Console.WriteLine("You win!");
+else
+    Console.WriteLine("Tie!");
+bool CheckVictory()
+{
+    bool row1 = grid[0] == grid[1] && grid[1] == grid[2];
+    bool row2 = grid[3] == grid[4] && grid[4] == grid[5];
+    bool row3 = grid[6] == grid[7] && grid[7] == grid[8];
+    bool col1 = grid[0] == grid[3] && grid[3] == grid[6];
+    bool col2 = grid[1] == grid[4] && grid[4] == grid[7];
+    bool col3 = grid[2] == grid[5] && grid[5] == grid[8];
+    bool diagDown = grid[0] == grid[4] && grid[4] == grid[8];
+    bool diagUp = grid[6] == grid[4] && grid[4] == grid[2];
+
+    return row1 || row2 || row3 || col1 || col2 || col3 || diagDown || diagUp;
+
+}
+   void PrintGrid()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
         {
-            Console.WriteLine("Welcome to my tic tac toe game!");
-            string choice;
-            //we would probably start the core loop around here
-            do 
-            {
-                
-                Console.Write("Wouold you like to play again?");
-                choice = Console.ReadLine().ToLower();
-            }while(choice =="y");
-            //prompt user for where they want to place their mark, user is X, user will always go first
-            //have the computer pick a spot, for the sake of simplicity make this version just pick a spot from a random number
-
-            //we want the grid printed out and to update with new inputs, not just print again for each new input
-            //3 in a row win, if no 3 in a row is possible the game is a draw
-
-            Console.WriteLine("Goodbye, thanks for playing!"); //what displays when the user ends the game
+            Console.Write(grid[i * 3 + j] + "|");
         }
+        Console.WriteLine();
+        Console.WriteLine("------");
     }
 }
+             
+             
